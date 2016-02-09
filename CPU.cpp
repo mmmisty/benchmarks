@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
         //delete thr;
         cout << endl;
         //cout << "End. There are " << nExperiment << " more to go." << endl << endl;
-        sleep(10);
+        usleep(10 * 1000);
 
     }
 
