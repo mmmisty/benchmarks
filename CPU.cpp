@@ -90,7 +90,9 @@ int main(int argc, char** argv) {
         //delete thr;
         cout << endl;
         //cout << "End. There are " << nExperiment << " more to go." << endl << endl;
-        usleep(10 * 1000);
+        if (nExperiment != 0) {
+            usleep(10 * 1000 * 1000);
+        }
 
     }
 
