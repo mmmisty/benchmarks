@@ -4,6 +4,7 @@
 #include <thread>
 #include <mutex>
 #include "stdlib.h"
+#include <string.h>
 
 using namespace std;
 
