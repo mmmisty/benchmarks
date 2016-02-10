@@ -85,8 +85,8 @@ int main(int argc, char** argv) {
     }
     int loop = (int) pow(2.0, (double) loopExp);
     int size = nSize[sizeNum];
-    cout << "size: " << size << endl;
-    cout << thread_num << " threads for " << (access == 0 ? "sequence" : "random") << "accessing " << (sizeNum == 0 ? "1B" : (access == 1 ? "1K" : "1M"))
+//    cout << "size: " << size << endl;
+    cout << thread_num << " threads for " << (access == 0 ? "sequence" : "random") << " accessing " << (sizeNum == 0 ? "1B" : (access == 1 ? "1K" : "1M"))
     << " memory run 2^" << loopExp << " times for " << nExperiment << " experiments" << endl << endl;
 
     while(nExperiment--) {
