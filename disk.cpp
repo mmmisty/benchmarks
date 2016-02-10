@@ -214,6 +214,9 @@ int main(int argc, char** argv) {
     << " disk run 2^" << loopExp << " times for " << nExperiment << " experiments" << endl << endl;
 
     while(nExperiment--) {
+        clock_t start, end;
+        start = clock();
+
         durations.clear();
         thread *thr = new thread[thread_num];
         //cout << "duration size: " << durations.size() << endl;
@@ -245,7 +248,9 @@ int main(int argc, char** argv) {
         }
         //delete thr;
         cout << endl;
-        //cout << "End. There are " << nExperiment << " more to go." << endl << endl;
+
+        end = clock();
+        cout << "Total time: " << (double) (end - start) / CLOCKS_PER_SEC << "End. There are " << nExperiment << " more to go." << endl << endl;
         if (nExperiment != 0) {
             usleep(10 * 1000 * 1000);
         }
