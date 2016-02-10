@@ -249,11 +249,12 @@ int main(int argc, char** argv) {
         //delete thr;
         cout << endl;
 
-        end = clock();
-        cout << "Total time: " << (double) (end - start) / CLOCKS_PER_SEC << "End. There are " << nExperiment << " more to go." << endl << endl;
         if (nExperiment != 0) {
             usleep(10 * 1000 * 1000);
         }
+        
+        end = clock();
+        cout << "Total time: " << (double) (end - start) / CLOCKS_PER_SEC << "End. There are " << nExperiment << " more to go." << endl << endl;
     }
     return 0;
 }
