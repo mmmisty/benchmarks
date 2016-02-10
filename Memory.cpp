@@ -18,14 +18,14 @@ void sequence_access(int id, int size, int loop) {
     // 1B buffer
     char *readBuffer = (char *) malloc(size);
 
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
     for (int i = 0; i < loop; ++i) {
         memcpy(readBuffer, gbmemory + size * i, size);
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 //    cout << "sequential durations: " << seconds << endl;
 
     mu.lock();
@@ -42,20 +42,20 @@ void random_access(int id, int size, int loop) {
     // 1B buffer
     char *readBuffer = (char *) malloc(size);
 
-    clock_t start, end;
 
     srand(time(NULL));
     int *dir = new int[loop];
     for (int j = 0; j < loop; ++j) {
         dir[j] = rand() % loop;
     }
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
 
     for (int j = 0; j < loop; ++j) {
         memcpy(readBuffer, gbmemory + size * dir[j], size);
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
     //cout << "sequential durations: " << seconds << endl;
 
     mu.lock();

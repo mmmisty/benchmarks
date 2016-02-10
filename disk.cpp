@@ -7,6 +7,7 @@
 #include "stdlib.h"
 #include <string.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -21,13 +22,13 @@ void sequence_write(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     mu.lock();
     durations.push_back(seconds);
@@ -48,15 +49,15 @@ void random_write(int id, int size, int loop, char* fileName){
 
     srand(time(NULL));
 
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
         long int pos = ftell(pFile);
         fseek(pFile, rand() % (pos+1), SEEK_SET);
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     mu.lock();
     durations.push_back(seconds);
@@ -103,14 +104,14 @@ void sequence_read(int id, int size, int loop, char* fileName){
     }
 
 
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fread(mem, sizeof(char), size, pFile);
 //        cout << mem << endl;
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     if (remove(alterName) != 0) {
         cout << "Error deleting file " << alterName << endl;
@@ -165,14 +166,14 @@ void random_read(int id, int size, int loop, char* fileName){
         dir[j] = rand() % (fileSize - size);
     }
 
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fseek(pFile, dir[i], SEEK_SET);
         fread(mem, sizeof(char), size, pFile);
     }
-    end = clock();
-    double seconds = (double) (end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     if (remove(alterName) != 0) {
         cout << "Error deleting file " << alterName << endl;
@@ -189,8 +190,8 @@ void random_read(int id, int size, int loop, char* fileName){
 int main(int argc, char** argv) {
     int nSize[] = {1, 1024, 1024*1024}; // 1B, 1K, 1M
 
-    int access = 1; // 0 for sequence access, 1 for random access
-    int operation = 0; // 0 for read, 1 for write
+    int access = 0; // 0 for sequence access, 1 for random access
+    int operation = 1; // 0 for read, 1 for write
     int sizeNum = 2; // to decide block size
     int thread_num = 1;
     int loopExp = 10;
@@ -214,8 +215,8 @@ int main(int argc, char** argv) {
     << " disk run 2^" << loopExp << " times for " << nExperiment << " experiments" << endl << endl;
 
     while(nExperiment--) {
-        clock_t start, end;
-        start = clock();
+//        struct timeval start, end;
+//        gettimeofday(&start, NULL);
 
         durations.clear();
         thread *thr = new thread[thread_num];
@@ -252,9 +253,10 @@ int main(int argc, char** argv) {
         if (nExperiment != 0) {
             usleep(10 * 1000 * 1000);
         }
-        
-        end = clock();
-        cout << "Total time: " << (double) (end - start) / CLOCKS_PER_SEC << "End. There are " << nExperiment << " more to go." << endl << endl;
+
+//        gettimeofday(&end, NULL);
+//        double duration = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
+//        cout << "Total time: " << duration << ".End. There are " << nExperiment << " more to go." << endl << endl;
     }
     return 0;
 }

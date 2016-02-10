@@ -12,8 +12,8 @@ mutex mu;
 
 void integer_thread(int id, int loop) {
     //cout << "Integer Thread " << id << endl;
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     int result = 0;
 
     for (int i = 0; i < loop; ++i) {
@@ -21,8 +21,8 @@ void integer_thread(int id, int loop) {
             result += i;
         }
     }
-    end = clock();
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     mu.lock();
     durations.push_back(seconds);
@@ -31,8 +31,8 @@ void integer_thread(int id, int loop) {
 
 void double_thread(int id, int loop) {
     //cout << "Double Thread " << id << endl;
-    clock_t start, end;
-    start = clock();
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     double result = 0.0;
 
     for (int i = 0; i < loop; ++i) {
@@ -40,8 +40,8 @@ void double_thread(int id, int loop) {
             result += result;
         }
     }
-    end = clock();
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
 
     mu.lock();
     durations.push_back(seconds);
