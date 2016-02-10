@@ -126,7 +126,25 @@ void sequence_read(int id, int size, int loop, char* fileName){
 void random_read(int id, int size, int loop, char* fileName){
     char* mem  = (char *) malloc(size);
     FILE* pFile;
-    pFile = fopen(fileName, "r");
+
+    char alterName[80];
+    strcpy(alterName, fileName);
+    alterName[strlen(fileName)] = id + '0';
+    alterName[strlen(fileName) + 1] = 0;
+
+//    cout << alterName << endl;
+
+    pFile = fopen(alterName, "w");
+    if(pFile == NULL) {
+        cout << "File error." << endl;
+        return;
+    }
+    for (int i = 0; i < loop; ++i) {
+        fwrite(mem, sizeof(char), size, pFile);
+    }
+    fclose(pFile);
+
+    pFile = fopen(alterName, "r");
     if (pFile == NULL) {
         cout << "File error." << endl;
         return;
@@ -156,6 +174,10 @@ void random_read(int id, int size, int loop, char* fileName){
     end = clock();
     double seconds = (double) (end - start) / CLOCKS_PER_SEC;
 
+    if (remove(alterName) != 0) {
+        cout << "Error deleting file " << alterName << endl;
+    }
+
     mu.lock();
     durations.push_back(seconds);
     mu.unlock();
@@ -167,7 +189,7 @@ void random_read(int id, int size, int loop, char* fileName){
 int main(int argc, char** argv) {
     int nSize[] = {1, 1024, 1024*1024}; // 1B, 1K, 1M
 
-    int access = 0; // 0 for sequence access, 1 for random access
+    int access = 1; // 0 for sequence access, 1 for random access
     int operation = 0; // 0 for read, 1 for write
     int sizeNum = 2; // to decide block size
     int thread_num = 1;
@@ -188,8 +210,8 @@ int main(int argc, char** argv) {
     int size = nSize[sizeNum];
 //    cout << "size: " << size << endl;
     cout << thread_num << " threads for " << (access == 0 ? "sequence" : "random")
-        << (operation == 0 ? " read " : " write ") << (sizeNum == 0 ? "1B" : (access == 1 ? "1K" : "1M"))
-        << " disk run 2^" << loopExp << " times for " << nExperiment << " experiments" << endl << endl;
+    << (operation == 0 ? " read " : " write ") << (sizeNum == 0 ? "1B" : (sizeNum == 1 ? "1K" : "1M"))
+    << " disk run 2^" << loopExp << " times for " << nExperiment << " experiments" << endl << endl;
 
     while(nExperiment--) {
         durations.clear();
