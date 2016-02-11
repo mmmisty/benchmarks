@@ -126,6 +126,13 @@ void sequence_read(int id, int size, int loop, char* fileName){
 
 void random_read(int id, int size, int loop, char* fileName){
     char* mem  = (char *) malloc(size);
+
+    srand(time(NULL));
+    for (int i = 0; i < size; i++) {
+        mem[i] = rand() % 255;
+    }
+    mem[size] = 0;
+
     FILE* pFile;
 
     char alterName[80];
@@ -140,7 +147,7 @@ void random_read(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-    for (int i = 0; i < loop; ++i) {
+    for (int i = 0; i < (int)pow(2.0, 19.0); ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
     fclose(pFile);
@@ -160,7 +167,6 @@ void random_read(int id, int size, int loop, char* fileName){
         return;
     }
 
-    srand(time(NULL));
     int *dir = new int[loop];
     for (int j = 0; j < loop; ++j) {
         dir[j] = rand() % (fileSize - size);
@@ -196,7 +202,7 @@ int main(int argc, char** argv) {
     int thread_num = 1;
     int loopExp = 10;
     int nExperiment = 2;
-    char* fileName = "/Users/mialiu/Projects/benchmark-disk/file0.bin";
+    char* fileName = (char*)"/Users/mialiu/Projects/benchmark-disk/file0.bin";
 
     if (argc > 7) {
         access = atoi(argv[1]);
