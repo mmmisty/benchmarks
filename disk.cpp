@@ -85,7 +85,9 @@ void sequence_read(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-    for (int i = 0; i < loop; ++i) {
+    int minSize = (int)pow(2.0, 30.0);
+    int readLoop = size * loop < minSize ? minSize / size : loop;
+    for (int i = 0; i < readLoop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
     fflush(pFile);
