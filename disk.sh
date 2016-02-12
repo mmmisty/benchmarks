@@ -3,11 +3,11 @@
 g++ -c disk.cpp -pthread -std=c++11
 g++ disk.o -o disk.out -pthread -std=c++11
 
-./disk.out 0 0 0 1 26 5 file0.bin
-./disk.out 0 0 0 2 25 5 file0.bin
-./disk.out 0 0 1 1 16 5 file0.bin
-./disk.out 0 0 1 2 15 5 file0.bin
-./disk.out 0 0 2 1 8 5 file0.bin
+#./disk.out 0 0 0 1 26 5 file0.bin
+#./disk.out 0 0 0 2 25 5 file0.bin
+#./disk.out 0 0 1 1 16 5 file0.bin
+#./disk.out 0 0 1 2 15 5 file0.bin
+#./disk.out 0 0 2 1 8 5 file0.bin
 ./disk.out 0 0 2 2 7 5 file0.bin
 ./disk.out 0 1 0 1 22 5 file0.bin
 ./disk.out 0 1 0 2 21 5 file0.bin
