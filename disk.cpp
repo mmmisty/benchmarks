@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
 //        cout << "Total time: " << duration << ".End. There are " << nExperiment << " more to go." << endl << endl;
         double throughput = 0;
         for (list<double>::iterator it = durations.begin(); it != durations.end(); it++) {
-            throughput += size * loop / 1024 / 1024 / *it;
+            throughput += (double)size * loop / 1024 / 1024 / *it;
         }
         cout << "Throughput : " << throughput << endl;
     }
