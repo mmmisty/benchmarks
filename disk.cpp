@@ -26,6 +26,7 @@ void sequence_write(int id, int size, int loop, char* fileName){
     gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
+        fflush(pFile);
     }
     gettimeofday(&end, NULL);
     double seconds = end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1000000.0;
@@ -53,6 +54,7 @@ void random_write(int id, int size, int loop, char* fileName){
     gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
+        fflush(pFile);
         long int pos = ftell(pFile);
         fseek(pFile, rand() % (pos+1), SEEK_SET);
     }
@@ -86,6 +88,7 @@ void sequence_read(int id, int size, int loop, char* fileName){
     for (int i = 0; i < loop; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
+    fflush(pFile);
     fclose(pFile);
 
     pFile = fopen(alterName, "r");
@@ -147,9 +150,10 @@ void random_read(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-    for (int i = 0; i < (int)pow(2.0, 19.0); ++i) {
+    for (int i = 0; i < loop /*(int)pow(2.0, 19.0)*/; ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
+    fflush(pFile);
     fclose(pFile);
 
     pFile = fopen(alterName, "r");
@@ -202,7 +206,7 @@ int main(int argc, char** argv) {
     int thread_num = 1;
     int loopExp = 10;
     int nExperiment = 2;
-    char* fileName = (char*)"/Users/mialiu/Projects/benchmark-disk/file0.bin";
+    char * fileName = (char*)"/Users/mialiu/Projects/benchmark-disk/file0.bin";
 
     if (argc > 7) {
         access = atoi(argv[1]);
@@ -237,7 +241,7 @@ int main(int argc, char** argv) {
                 }
             } else {
                 if (0 == access) {
-                    thr[i] = thread(sequence_read, i+nExperiment, size, loop, fileName);
+                    thr[i] = thread(sequence_read, i, size, loop, fileName);
                 } else {
                     thr[i] = thread(random_read, i, size, loop, fileName);
                 }
