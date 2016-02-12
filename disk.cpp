@@ -275,7 +275,7 @@ int main(int argc, char** argv) {
         for (list<double>::iterator it = durations.begin(); it != durations.end(); it++) {
             throughput += (double)size * loop / 1024 / 1024 / *it;
         }
-        cout << "Throughput : " << throughput << endl;
+        cout << "Throughput : " << throughput << endl << endl << endl;
     }
     return 0;
 }
