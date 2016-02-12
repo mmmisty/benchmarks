@@ -264,8 +264,8 @@ int main(int argc, char** argv) {
         //delete thr;
         cout << endl;
 
-        if (nExperiment != 0) {
-            usleep(10 * 1000 * 1000);
+        if (nExperiment != -1) {
+            usleep(5 * 1000 * 1000);
         }
 
 //        gettimeofday(&end, NULL);
