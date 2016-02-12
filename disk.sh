@@ -28,3 +28,5 @@ g++ disk.o -o disk.out -pthread -std=c++11
 ./disk.out 1 1 2 1 14 5 file0.bin
 ./disk.out 1 1 2 2 13 5 file0.bin
 
+
+
