@@ -150,7 +150,7 @@ void random_read(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-    for (int i = 0; i < loop /*(int)pow(2.0, 19.0)*/; ++i) {
+    for (int i = 0; i < /*loop*/ (int)pow(2.0, 19.0); ++i) {
         fwrite(mem, sizeof(char), size, pFile);
     }
     fflush(pFile);
