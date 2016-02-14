@@ -14,6 +14,11 @@ using namespace std;
 list<double> durations;
 mutex mu;
 
+void * _M;
+void useup_memory() {
+    _M = malloc(1024*1024*700);
+}
+
 void sequence_write(int id, int size, int loop, char* fileName){
     char* mem  = (char *) malloc(size);
     FILE* pFile;
@@ -203,6 +208,8 @@ void random_read(int id, int size, int loop, char* fileName){
 
 int main(int argc, char** argv) {
     int nSize[] = {1, 1024, 1024*1024}; // 1B, 1K, 1M
+
+    useup_memory();
 
     int access = 0; // 0 for sequence access, 1 for random access
     int operation = 1; // 0 for read, 1 for write
