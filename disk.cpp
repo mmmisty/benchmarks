@@ -14,9 +14,13 @@ using namespace std;
 list<double> durations;
 mutex mu;
 
-void * _M;
+int* _M;
 void useup_memory() {
-    _M = malloc(1024*1024*700);
+    int size = 1024*1024*800;
+    _M = (int*)malloc(size);
+    for (int i = 0; i < size/4; i++) {
+        _M[i] = i;
+    }
 }
 
 void sequence_write(int id, int size, int loop, char* fileName){
