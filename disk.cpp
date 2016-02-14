@@ -22,8 +22,6 @@ void sequence_write(int id, int size, int loop, char* fileName){
         cout << "File error." << endl;
         return;
     }
-
-    fsync(pFile);
     struct timeval start, end;
     gettimeofday(&start, NULL);
     for (int i = 0; i < loop; ++i) {
@@ -51,7 +49,6 @@ void random_write(int id, int size, int loop, char* fileName){
     }
 
     srand(time(NULL));
-    fsync(pFile);
 
     struct timeval start, end;
     gettimeofday(&start, NULL);
